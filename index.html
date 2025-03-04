@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>In Memory of Susan Barkman</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Montserrat:wght@300;400&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body, html {
+            height: 100%;
+            font-family: 'Montserrat', sans-serif;
+            overflow: hidden;
+            color: white;
+        }
+        
+        .background {
+            position: fixed;
+            top: -10%;
+            left: -10%;
+            width: 120%;
+            height: 120%;
+            background-image: url('BG.jpg');
+            background-size: cover; /* Maintain aspect ratio */
+            background-position: center;
+            z-index: -2;
+            transition: transform 0.1s ease-out;
+        }
+        
+        .text-shadow-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to right, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.3) 50%, rgba(0,0,0,0) 100%);
+            z-index: -1;
+        }
+        
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+        
+        .particle {
+            position: absolute;
+            background-color: rgba(255, 255, 255, 0.5);
+            border-radius: 50%;
+            animation: float 20s infinite ease-in-out;
+        }
+        
+        @keyframes float {
+            0% {
+                transform: translateY(0) translateX(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.7;
+            }
+            90% {
+                opacity: 0.7;
+            }
+            100% {
+                transform: translateY(-100vh) translateX(20px);
+                opacity: 0;
+            }
+        }
+        
+        .container {
+            display: flex;
+            height: 100vh;
+            padding: 20px;
+            position: relative;
+        }
+        
+        .content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+            padding-left: 10%;
+            max-width: 60%;
+            animation: fadeIn 2s ease-in-out;
+            position: relative;
+            z-index: 5;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes textGlow {
+            0%, 100% { text-shadow: 0 0 5px rgba(255, 255, 255, 0.3); }
+            50% { text-shadow: 0 0 20px rgba(255, 255, 255, 0.7), 0 0 30px rgba(255, 255, 255, 0.5); }
+        }
+        
+        .forever {
+            font-size: 1.2rem;
+            letter-spacing: 3px;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            font-weight: 300;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);
+            animation: textGlow 5s infinite ease-in-out;
+        }
+        
+        .name-container {
+            margin-bottom: 10px;
+            position: relative;
+        }
+        
+        .name {
+            font-family: 'Dancing Script', cursive;
+            font-size: 5rem;
+            letter-spacing: 2px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+            position: relative;
+        }
+        
+        .name span {
+            opacity: 0;
+            animation: fadeInLetter 0.5s forwards;
+            display: inline-block;
+        }
+        
+        @keyframes fadeInLetter {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .years {
+            font-size: 1.8rem;
+            margin-bottom: 40px;
+            letter-spacing: 2px;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);
+            animation: textGlow 5s infinite ease-in-out;
+            animation-delay: 1s;
+        }
+        
+        .poem {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            margin-top: 20px;
+            font-weight: 300;
+            max-width: 400px;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);
+            animation: textGlow 5s infinite ease-in-out;
+            animation-delay: 2s;
+        }
+        
+        .image-container {
+            position: absolute;
+            bottom: -10px;
+            right: 0;
+            height: 95%;
+            display: flex;
+            align-items: flex-end;
+            justify-content: flex-end;
+            z-index: 2;
+            overflow: hidden;
+        }
+        
+        .mom-image {
+            height: 95vh;
+            max-height: 95%;
+            object-fit: contain;
+            object-position: bottom;
+            animation: gentle-sway 10s infinite ease-in-out;
+            transform-origin: bottom center;
+        }
+        
+        @keyframes gentle-sway {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        /* Audio controls */
+        .audio-controls {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            opacity: 0.7;
+            transition: opacity 0.3s ease;
+        }
+        
+        .audio-controls:hover {
+            opacity: 1;
+        }
+        
+        .audio-button {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            padding: 10px;
+            border-radius: 50%;
+            background-color: rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+        }
+        
+        .audio-button:hover {
+            background-color: rgba(0, 0, 0, 0.5);
+            transform: scale(1.1);
+        }
+        
+        .audio-volume {
+            width: 80px;
+            margin-left: 10px;
+            display: none; /* Hidden by default, shown when audio is playing */
+        }
+        
+        /* Candle styling */
+        .candle-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 100;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .candle {
+            width: 50px;
+            height: 80px;
+            position: relative;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .candle:hover {
+            transform: scale(1.1);
+        }
+        
+        .candle-body {
+            width: 30px;
+            height: 60px;
+            background: linear-gradient(to bottom, #fff, #ffdca8);
+            border-radius: 8px 8px 0 0;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+            box-shadow: 0 0 10px rgba(255, 220, 168, 0.5);
+        }
+        
+        .candle-base {
+            width: 50px;
+            height: 10px;
+            background: #ddd;
+            border-radius: 5px;
+            margin: 0 auto;
+            margin-top: -5px;
+            position: relative;
+            z-index: 0;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+        }
+        
+        .wick {
+            width: 4px;
+            height: 10px;
+            background: #333;
+            border-radius: 50%;
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .flame {
+            width: 15px;
+            height: 25px;
+            background: radial-gradient(ellipse at center, rgba(255, 255, 0, 0.7) 0%, rgba(255, 165, 0, 0.8) 60%, rgba(255, 69, 0, 0.5) 100%);
+            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+            position: absolute;
+            top: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            filter: blur(1px);
+            animation: flicker 1s infinite alternate;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+        
+        .candle.lit .flame {
+            opacity: 1;
+        }
+        
+        @keyframes flicker {
+            0%, 100% { transform: translateX(-50%) scale(1); }
+            50% { transform: translateX(-51%) scale(1.1) rotate(5deg); }
+            75% { transform: translateX(-49%) scale(0.9) rotate(-5deg); }
+        }
+        
+        .candle-glow {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(ellipse at bottom right, rgba(255, 165, 0, 0.2) 0%, rgba(255, 69, 0, 0.1) 30%, rgba(0, 0, 0, 0) 70%);
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            z-index: 1;
+        }
+        
+        .candle-counter {
+            color: white;
+            font-size: 14px;
+            margin-top: 5px;
+            text-shadow: 0 0 3px rgba(0, 0, 0, 0.7);
+        }
+        
+        @media (max-width: 1024px) {
+            .container {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+                padding: 10px;
+                justify-content: flex-start;
+            }
+            
+            .content {
+                align-items: center;
+                padding-left: 0;
+                padding-top: 20px;
+                max-width: 100%;
+                margin-top: 0;
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: auto;
+                z-index: 10;
+                justify-content: flex-start;
+            }
+            
+            .image-container {
+                position: absolute;
+                right: 0;
+                left: 0;
+                height: 60%;
+                width: 100%;
+                justify-content: center;
+                bottom: -30px; /* Push image below viewport edge */
+                top: auto;
+                z-index: 1;
+            }
+            
+            .mom-image {
+                height: auto;
+                max-height: 70vh;
+                position: absolute;
+                bottom: 0;
+                object-position: bottom;
+            }
+            
+            .name {
+                font-size: 3.5rem;
+            }
+            
+            .years {
+                font-size: 1.5rem;
+                margin-bottom: 15px; /* Reduced spacing */
+            }
+            
+            .forever {
+                margin-bottom: 10px; /* Reduced spacing */
+            }
+            
+            .text-shadow-container {
+                background: linear-gradient(to bottom, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.3) 50%, rgba(0,0,0,0) 100%);
+            }
+        }
+        
+        @media (max-width: 600px) {
+            .content {
+                padding-top: 30px; /* More padding at top to move content down from edge */
+                height: auto;
+                max-height: 50vh; /* Limit content height to top portion of screen */
+            }
+            
+            .name {
+                font-size: 2.5rem;
+            }
+            
+            .years {
+                font-size: 1.2rem;
+                margin-bottom: 10px; /* Reduced spacing */
+            }
+            
+            .forever {
+                font-size: 0.9rem;
+                margin-bottom: 5px; /* Reduced spacing */
+            }
+            
+            .poem {
+                font-size: 1rem;
+                padding: 0 20px;
+                line-height: 1.5; /* Reduced line height */
+                margin-top: 10px; /* Reduced spacing */
+            }
+            
+            .mom-image {
+                max-height: 60vh;
+                bottom: -10px; /* Push even further down on small screens */
+            }
+            
+            .image-container {
+                height: 70%; /* Make image container taller on mobile */
+                bottom: -20px;
+            }
+            
+            .audio-controls {
+                top: 10px;
+                left: 10px;
+            }
+            
+            .candle-container {
+                bottom: 10px;
+                right: auto;
+                left: 50%;
+                transform: translateX(-50%);
+            }
+            
+            .audio-button, .candle-counter {
+                font-size: 18px;
+                width: 40px;
+                height: 40px;
+            }
+            
+            .candle {
+                width: 40px;
+                height: 60px;
+            }
+            
+            .candle-body {
+                width: 24px;
+                height: 48px;
+            }
+            
+            .candle-base {
+                width: 40px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="background" id="background"></div>
+    <div class="text-shadow-container"></div>
+    <div class="particles" id="particles"></div>
+    <div class="candle-glow" id="candle-glow"></div>
+    
+    <div class="container">
+        <div class="content">
+            <div class="forever">Forever in our hearts</div>
+            <div class="name-container">
+                <div class="name" id="name">Susan Barkman</div>
+            </div>
+            <div class="years">1957 - 2022</div>
+            <div class="poem">
+                Life is beautiful<br>
+                It's about giving.<br>
+                It's about family.
+            </div>
+        </div>
+        
+        <div class="image-container">
+            <img src="mom.png" alt="Susan Barkman" class="mom-image">
+        </div>
+    </div>
+    
+    <!-- Audio controls -->
+    <div class="audio-controls">
+        <button class="audio-button" id="audio-button">
+            <i class="fas fa-volume-mute" id="audio-icon"></i>
+        </button>
+        <input type="range" min="0" max="100" value="50" class="audio-volume" id="audio-volume">
+        <audio id="background-audio" loop>
+            <!-- Example audio URL - you'll need to replace this with your actual audio file -->
+            <source src="mom.mp3" type="audio/mpeg">
+        </audio>
+    </div>
+    
+    <!-- Candle -->
+    <div class="candle-container">
+        <div class="candle" id="candle">
+            <div class="flame"></div>
+            <div class="wick"></div>
+            <div class="candle-body"></div>
+            <div class="candle-base"></div>
+        </div>
+        <div class="candle-counter" id="candle-counter">Light a candle</div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-analytics-compat.js"></script>
+    
+    <script>
+        // Create floating particles
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = Math.min(window.innerWidth / 8, 50);
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                
+                const size = Math.random() * 5 + 3;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                
+                particle.style.left = `${Math.random() * 100}%`;
+                particle.style.bottom = `${Math.random() * 20}%`;
+                
+                const duration = Math.random() * 15 + 15;
+                const delay = Math.random() * 10;
+                particle.style.animationDuration = `${duration}s`;
+                particle.style.animationDelay = `${delay}s`;
+                
+                particlesContainer.appendChild(particle);
+            }
+        }
+        
+        // Animate name reveal letter by letter
+        function animateNameReveal() {
+            const nameElement = document.getElementById('name');
+            const text = nameElement.textContent;
+            nameElement.textContent = '';
+            
+            // Create spans for each letter
+            for (let i = 0; i < text.length; i++) {
+                const span = document.createElement('span');
+                span.textContent = text[i];
+                span.style.animationDelay = `${i * 0.1}s`; // Stagger the animation
+                nameElement.appendChild(span);
+            }
+        }
+        
+        // Parallax effect for background
+        function setupParallax() {
+            const background = document.getElementById('background');
+            
+            // Mouse movement parallax
+            document.addEventListener('mousemove', (e) => {
+                const mouseX = e.clientX / window.innerWidth;
+                const mouseY = e.clientY / window.innerHeight;
+                
+                const moveX = (mouseX - 0.5) * 6; // Further reduced movement to prevent edge showing
+                const moveY = (mouseY - 0.5) * 6;
+                
+                background.style.transform = `translate(${moveX}px, ${moveY}px)`;
+            });
+            
+            // Gyroscope support for mobile
+            if (window.DeviceOrientationEvent) {
+                window.addEventListener('deviceorientation', (e) => {
+                    // Check if we have meaningful data
+                    if (e.beta !== null && e.gamma !== null) {
+                        // Convert orientation to movement (limited range)
+                        const moveX = Math.min(Math.max(e.gamma / 3, -4), 4); // Even more limited to prevent edge showing
+                        const moveY = Math.min(Math.max(e.beta / 3, -4), 4);
+                        
+                        background.style.transform = `translate(${moveX}px, ${moveY}px)`;
+                    }
+                });
+            }
+        }
+        
+        // Audio handling
+        function setupAudio() {
+            const audioButton = document.getElementById('audio-button');
+            const audioIcon = document.getElementById('audio-icon');
+            const audioElement = document.getElementById('background-audio');
+            const volumeControl = document.getElementById('audio-volume');
+            
+            // Initial state
+            let isPlaying = false;
+            audioElement.volume = 0.5; // Default volume at 50%
+            
+            // Toggle audio play/pause
+            audioButton.addEventListener('click', () => {
+                if (isPlaying) {
+                    audioElement.pause();
+                    audioIcon.className = 'fas fa-volume-mute';
+                    volumeControl.style.display = 'none';
+                } else {
+                    audioElement.play().catch(e => {
+                        console.warn('Audio playback was not allowed:', e);
+                        // Show a message to the user if needed
+                    });
+                    audioIcon.className = 'fas fa-volume-up';
+                    volumeControl.style.display = 'block';
+                }
+                
+                isPlaying = !isPlaying;
+            });
+            
+            // Volume control
+            volumeControl.addEventListener('input', () => {
+                audioElement.volume = volumeControl.value / 100;
+            });
+        }
+        
+        // Candle interaction
+        function setupCandle() {
+            const candle = document.getElementById('candle');
+            const candleCounter = document.getElementById('candle-counter');
+            const candleGlow = document.getElementById('candle-glow');
+            
+            // Initialize Firebase
+            firebase.initializeApp({
+                apiKey: "AIzaSyCKBeUTpJKGTGUyM_X9umfip8GAz_Z2h64",
+                authDomain: "mom-candle.firebaseapp.com",
+                projectId: "mom-candle",
+                storageBucket: "mom-candle.firebasestorage.app",
+                messagingSenderId: "197936261879",
+                appId: "1:197936261879:web:67309e6f098861f74981f2",
+                measurementId: "G-Y1TK37N5HQ"
+            });
+            
+            const analytics = firebase.analytics();
+            const db = firebase.firestore();
+            const candleCountRef = db.collection('candles').doc('counter');
+            
+            // Check if candle was previously lit (using local storage)
+            const isLit = localStorage.getItem('candleLit') === 'true';
+            
+            // Update UI based on stored state
+            if (isLit) {
+                candle.classList.add('lit');
+                candleGlow.style.opacity = '1';
+            }
+            
+            // Fetch current candle count
+            function fetchCandleCount() {
+                candleCountRef.get().then((doc) => {
+                    if (doc.exists) {
+                        const count = doc.data().count;
+                        updateCandleCounter(count);
+                    } else {
+                        // Create the document if it doesn't exist
+                        candleCountRef.set({ count: 0 })
+                            .then(() => updateCandleCounter(0))
+                            .catch(error => console.error("Error creating counter document:", error));
+                    }
+                }).catch(error => {
+                    console.error("Error getting candle count:", error);
+                    updateCandleCounter(0); // Fallback
+                });
+            }
+            
+            // Handle candle click
+            candle.addEventListener('click', () => {
+                const wasLit = candle.classList.contains('lit');
+                
+                if (!wasLit) {
+                    // Light the candle
+                    candle.classList.add('lit');
+                    candleGlow.style.opacity = '1';
+                    
+                    // Update counter only if not previously lit by this user
+                    if (localStorage.getItem('candleLit') !== 'true') {
+                        // Update Firebase counter
+                        candleCountRef.update({
+                            count: firebase.firestore.FieldValue.increment(1)
+                        }).then(() => {
+                            // Fetch the updated count
+                            fetchCandleCount();
+                        }).catch(error => {
+                            console.error("Error updating candle count:", error);
+                        });
+                    }
+                    
+                    // Save state
+                    localStorage.setItem('candleLit', 'true');
+                } else {
+                    // Extinguish the candle
+                    candle.classList.remove('lit');
+                    candleGlow.style.opacity = '0';
+                    localStorage.setItem('candleLit', 'false');
+                }
+            });
+            
+            // Update counter display
+            function updateCandleCounter(count) {
+                if (count === 0) {
+                    candleCounter.textContent = 'Light a candle';
+                } else if (count === 1) {
+                    candleCounter.textContent = '1 candle lit';
+                } else {
+                    candleCounter.textContent = `${count} candles lit`;
+                }
+            }
+            
+            // Initial counter fetch
+            fetchCandleCount();
+        }
+        
+        // Initialize on load
+        window.addEventListener('load', () => {
+            createParticles();
+            animateNameReveal();
+            setupParallax();
+            setupAudio();
+            setupCandle();
+        });
+        
+        // Recreate particles on resize for responsiveness
+        let resizeTimeout;
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(() => {
+                const particlesContainer = document.getElementById('particles');
+                particlesContainer.innerHTML = '';
+                createParticles();
+            }, 300);
+        });
+    </script>
+</body>
+</html>
