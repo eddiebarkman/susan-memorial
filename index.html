@@ -236,7 +236,7 @@
         .candle-container {
             position: fixed;
             bottom: 20px;
-            right: 20px;
+            left: 20px;
             z-index: 100;
             text-align: center;
             display: flex;
@@ -400,7 +400,7 @@
         
         @media (max-width: 600px) {
             .content {
-                padding-top: 30px; /* More padding at top to move content down from edge */
+                padding-top: 4em; /* More padding at top to move content down from edge */
                 height: auto;
                 max-height: 50vh; /* Limit content height to top portion of screen */
             }
@@ -443,14 +443,12 @@
             
             .candle-container {
                 bottom: 10px;
-                right: auto;
-                left: 50%;
-                transform: translateX(-50%);
+                left: 20px;
             }
             
             .audio-button, .candle-counter {
                 font-size: 18px;
-                width: 40px;
+                width: auto;
                 height: 40px;
             }
             
